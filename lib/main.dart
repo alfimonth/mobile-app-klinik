@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'hello_world.dart';
+// import 'hello_world.dart';
+import 'column_widget.dart';
 
 void main() {
   runApp(const MyApp());
@@ -12,7 +13,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return const MaterialApp(
       title: 'Klinik',
-      home: HelloWorld(),
+      // home: HelloWorld(),
+      home: ColumnWidget(),
     );
   }
 }
