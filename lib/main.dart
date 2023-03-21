@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 // import 'hello_world.dart';
 // import 'column_widget.dart';
-import 'row_widget.dart';
+// import 'row_widget.dart';
+import 'baris_kolom.dart';
 
 
 void main() {
@@ -17,7 +18,8 @@ class MyApp extends StatelessWidget {
       title: 'Klinik',
       // home: HelloWorld(),
       // home: ColumnWidget(),
-      home: RowWidget(),
+      // home: RowWidget(),
+      home: BarisKolomWidget(),
     );
   }
 }
