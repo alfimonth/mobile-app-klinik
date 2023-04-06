@@ -22,6 +22,7 @@ class MyApp extends StatelessWidget {
       // home: RowWidget(),
       // home: BarisKolomWidget(),
       home: HomePage(),
+      debugShowCheckedModeBanner: false,
     );
   }
 }
