@@ -7,6 +7,7 @@ class PoliForm extends StatefulWidget {
 
 class _PoliFormState extends State<PoliForm> {
   final _formKey = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -15,15 +16,20 @@ class _PoliFormState extends State<PoliForm> {
         child: Form(
           key: _formKey,
           child: Column(
-            children: [
-              TextField(
-                  decoration: const InputDecoration(labelText: "Nama Poli")),
-              SizedBox(height: 20),
-              ElevatedButton(onPressed: () {}, child: const Text("Simpan"))
-            ],
+            children: [_fieldNamaPoli(), SizedBox(height: 20), _tombolSimpan()],
           ),
         ),
       ),
     );
+  }
+
+  _fieldNamaPoli() {
+    return TextField(
+      decoration: const InputDecoration(labelText: "Nama Poli"),
+    );
+  }
+
+  _tombolSimpan() {
+    return ElevatedButton(onPressed: () {}, child: const Text("Simpan"));
   }
 }
