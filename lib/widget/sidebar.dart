@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import '../ui/beranda.dart';
 import '../ui/login.dart';
 import '../ui/poli_page.dart';
+import '../ui/pegawai_page.dart';
+import '../ui/pasien_page.dart';
 
 class Sidebar extends StatelessWidget {
   const Sidebar({Key? key}) : super(key: key);
@@ -33,12 +35,18 @@ class Sidebar extends StatelessWidget {
           ListTile(
             leading: Icon(Icons.people),
             title: Text("Pegawai"),
-            onTap: () {},
+            onTap: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => PegawaiPage()));
+            },
           ),
           ListTile(
             leading: Icon(Icons.account_box_sharp),
             title: Text("Pasien"),
-            onTap: () {},
+            onTap: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => PasienPage()));
+            },
           ),
           ListTile(
             leading: Icon(Icons.logout_rounded),

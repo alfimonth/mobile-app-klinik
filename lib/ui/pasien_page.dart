@@ -3,6 +3,7 @@ import '../model/database.dart';
 import '../model/pasien.dart';
 import 'pasien_item.dart';
 import 'pasien_form.dart';
+import '../widget/sidebar.dart';
 
 class PasienPage extends StatefulWidget {
   const PasienPage({super.key});
@@ -15,6 +16,7 @@ class _PasienPageState extends State<PasienPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: Sidebar(),
       appBar: AppBar(
         title: const Text("Data Pasien"),
         actions: [
