@@ -16,24 +16,51 @@ class _PegawaiFormState extends State<PegawaiForm> {
           key: _formKey,
           child: Column(
             children: [
-              TextField(
-                  decoration: const InputDecoration(labelText: "Nama Pegawai")),
-              TextField(decoration: const InputDecoration(labelText: "NIP")),
-              TextField(
-                  decoration:
-                      const InputDecoration(labelText: "Tanggal Lahir")),
-              TextField(
-                  decoration:
-                      const InputDecoration(labelText: "Nomor Telepon")),
-              TextField(decoration: const InputDecoration(labelText: "Email")),
-              TextField(
-                  decoration: const InputDecoration(labelText: "Password")),
-              SizedBox(height: 20),
-              ElevatedButton(onPressed: () {}, child: const Text("Simpan"))
+              _fieldNamaPegawai(),
+              _fieldNIP(),
+              _fieldTangalLahir(),
+              _fieldNomorTelepon(),
+              _fieldEmail(),
+              _fieldPassword(),
+              const SizedBox(height: 20),
+              _tombolSimpan(),
             ],
           ),
         ),
       ),
     );
+  }
+
+  _fieldNamaPegawai(){
+    return TextField(
+                  decoration: const InputDecoration(labelText: "Nama Pegawai"));
+  }
+
+  _fieldNIP(){
+    return TextField(decoration: const InputDecoration(labelText: "NIP"));
+  }
+
+  _fieldTangalLahir(){
+    return TextField(
+                  decoration:
+                      const InputDecoration(labelText: "Tanggal Lahir"));
+  }
+
+  _fieldNomorTelepon(){
+    return TextField(
+                  decoration:
+                      const InputDecoration(labelText: "Nomor Telepon"));
+  }
+
+  _fieldEmail(){
+    return TextField(decoration: const InputDecoration(labelText: "Email"));
+  }
+
+  _fieldPassword(){
+    return TextField(
+                  decoration: const InputDecoration(labelText: "Password"));
+  }
+  _tombolSimpan(){
+    return ElevatedButton(onPressed: () {}, child: const Text("Simpan"));
   }
 }
