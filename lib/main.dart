@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 // import 'column_widget.dart';
 // import 'row_widget.dart';
 // import 'baris_kolom.dart';
-import 'ui/home.dart';
-
+// import 'ui/home.dart';
+import 'ui/beranda.dart';
 
 void main() {
   runApp(const MyApp());
@@ -21,7 +21,7 @@ class MyApp extends StatelessWidget {
       // home: ColumnWidget(),
       // home: RowWidget(),
       // home: BarisKolomWidget(),
-      home: HomePage(),
+      home: Beranda(),
       debugShowCheckedModeBanner: false,
     );
   }
