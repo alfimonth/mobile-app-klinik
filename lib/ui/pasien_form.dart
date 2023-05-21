@@ -16,26 +16,53 @@ class _PasienFormState extends State<PasienForm> {
           key: _formKey,
           child: Column(
             children: [
-              TextField(
-                  decoration: const InputDecoration(labelText: "Nama Pasien")),
-              TextField(
-                  decoration:
-                      const InputDecoration(labelText: "No Rekam Medis")),
-              TextField(
-                  decoration:
-                      const InputDecoration(labelText: "Tanggal Lahir")),
-              TextField(
-                  decoration:
-                      const InputDecoration(labelText: "Nomor Telepon")),
-              TextField(
-                decoration: 
-                      const InputDecoration(labelText: "Alamat")),
-              SizedBox(height: 20),
-              ElevatedButton(onPressed: () {}, child: const Text("Simpan"))
+              _fieldNamaPasien(),
+              _fieldNoRekamMedis(),
+              _fieldTanggalLahir(),
+              _fieldNomorTelepon(),
+              _fieldAlamat(),
+              _tombolSimpan()
             ],
           ),
         ),
       ),
     );
   }
+}
+
+_fieldNamaPasien() {
+  return const TextField(
+    decoration: InputDecoration(labelText: "Nama Pasien"),
+  );
+}
+
+_fieldNoRekamMedis() {
+  return const TextField(
+    decoration: InputDecoration(labelText: "No Rekam Medis"),
+  );
+}
+
+_fieldTanggalLahir() {
+  return const TextField(
+    decoration: InputDecoration(labelText: "Tanggal Lahir"),
+  );
+}
+
+_fieldNomorTelepon() {
+  return const TextField(
+    decoration: InputDecoration(labelText: "Nomor Telepon"),
+  );
+}
+
+_fieldAlamat() {
+  return const TextField(
+    decoration: InputDecoration(labelText: "Alamat"),
+  );
+}
+
+_tombolSimpan() {
+  return [
+    const SizedBox(height: 20),
+    ElevatedButton(onPressed: () {}, child: const Text("Simpan"))
+  ];
 }
