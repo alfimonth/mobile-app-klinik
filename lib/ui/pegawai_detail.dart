@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../model/pegawai.dart';
+import 'pegawai_update_form.dart';
 import '../model/database.dart';
 
 class PegawaiDetail extends StatefulWidget {
@@ -52,24 +53,35 @@ class _PegawaiDetailState extends State<PegawaiDetail> {
                 )
               ],
             ),
-
             const SizedBox(height: 50),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                ElevatedButton(
-                    onPressed: () {},
-                    style:
-                        ElevatedButton.styleFrom(backgroundColor: Colors.green),
-                    child: const Text("Ubah")),
-                ElevatedButton(
-                    onPressed: () {},
-                    style:
-                        ElevatedButton.styleFrom(backgroundColor: Colors.red),
-                    child: const Text("Hapus")),
+                _tombolUbah(),
+                _tombolHapus(),
               ],
             )
           ],
         ));
+  }
+
+  _tombolUbah() {
+    return ElevatedButton(
+        onPressed: () {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) =>
+                      PegawaiUpdateForm(pegawai: widget.pegawai)));
+        },
+        style: ElevatedButton.styleFrom(backgroundColor: Colors.green),
+        child: const Text("Ubah"));
+  }
+
+  _tombolHapus() {
+    return ElevatedButton(
+        onPressed: () {},
+        style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
+        child: const Text("Hapus"));
   }
 }
