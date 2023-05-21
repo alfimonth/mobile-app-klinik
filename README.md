@@ -6,5 +6,6 @@ sebuah Flutter project.
 
 Preview:
 
-![mobile](https://user-images.githubusercontent.com/96417922/230287214-04a395d6-b942-4443-b98f-b15fef241fbb.gif)
+![mobile](https://github.com/alfimonth/mobile-app-klinik/assets/96417922/d9985501-eb57-45ef-9429-cf80493b5bdd)
+
 
