@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../model/pegawai.dart';
 import 'pegawai_update_form.dart';
+import 'pegawai_page.dart';
 import '../model/database.dart';
 
 class PegawaiDetail extends StatefulWidget {
@@ -80,7 +81,32 @@ class _PegawaiDetailState extends State<PegawaiDetail> {
 
   _tombolHapus() {
     return ElevatedButton(
-        onPressed: () {},
+        onPressed: () {
+          AlertDialog alertDialog = AlertDialog(
+            content: const Text("Yakin ingin menghapus data ini?"),
+            actions: [
+              // tombol ya
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                  Navigator.pushReplacement(context,
+                      MaterialPageRoute(builder: (context) => PegawaiPage()));
+                },
+                child: const Text("YA"),
+                style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
+              ),
+              // tombol batal
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: Text("Tidak"),
+                style: ElevatedButton.styleFrom(backgroundColor: Colors.green),
+              )
+            ],
+          );
+          showDialog(context: context, builder: (context) => alertDialog);
+        },
         style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
         child: const Text("Hapus"));
   }
