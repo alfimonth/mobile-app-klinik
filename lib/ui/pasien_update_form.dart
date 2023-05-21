@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:aplikasi_flutter_pertamaku/model/pasien.dart';
-import 'package:aplikasi_flutter_pertamaku/ui/pasien_detail.dart';
+import '../model/pasien.dart';
+import '../ui/pasien_detail.dart';
 
-class PasienForm extends StatefulWidget {
-  const PasienForm({Key? key}) : super(key: key);
-  _PasienFormState createState() => _PasienFormState();
+class PasienUpdateForm extends StatefulWidget {
+  final Pasien pasien;
+
+  const PasienUpdateForm({Key? key, required this.pasien}) : super(key: key);
+  _PasienUpdateFormState createState() => _PasienUpdateFormState();
 }
 
-class _PasienFormState extends State<PasienForm> {
+class _PasienUpdateFormState extends State<PasienUpdateForm> {
   final _formKey = GlobalKey<FormState>();
   final _namaPasienCtrl = TextEditingController();
   final _noRekamMedisCtrl = TextEditingController();
@@ -16,9 +18,21 @@ class _PasienFormState extends State<PasienForm> {
   final _alamatCtrl = TextEditingController();
 
   @override
+  void initState() {
+    super.initState();
+    setState(() {
+      _namaPasienCtrl.text = widget.pasien.nama;
+      _noRekamMedisCtrl.text = widget.pasien.noRm;
+      _tanggalLahirCtrl.text = widget.pasien.tanggalLahir;
+      _nomorTeleponCtrl.text = widget.pasien.nomorTelepon;
+      _alamatCtrl.text = widget.pasien.alamat;
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Tambah Pasien")),
+      appBar: AppBar(title: const Text("Ubah Pasien")),
       body: SingleChildScrollView(
         child: Form(
           key: _formKey,
@@ -29,7 +43,7 @@ class _PasienFormState extends State<PasienForm> {
               _fieldTanggalLahir(),
               _fieldNomorTelepon(),
               _fieldAlamat(),
-              const SizedBox(height: 20),
+              SizedBox(height: 20),
               _tombolSimpan()
             ],
           ),
@@ -84,11 +98,12 @@ class _PasienFormState extends State<PasienForm> {
             'nomorTelepon': _nomorTeleponCtrl.text,
             'alamat': _alamatCtrl.text
           });
+          Navigator.pop(context);
           Navigator.pushReplacement(
               context,
               MaterialPageRoute(
                   builder: (context) => PasienDetail(pasien: pasien)));
         },
-        child: const Text("Simpan"));
+        child: const Text("Simpan Perubahan"));
   }
 }
