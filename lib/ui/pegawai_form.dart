@@ -55,10 +55,33 @@ class _PegawaiFormState extends State<PegawaiForm> {
     );
   }
 
+  // _fieldTangalLahir() {
+  //   return TextField(
+  //     decoration: const InputDecoration(labelText: "Tanggal Lahir"),
+  //     controller: _tanggalLahirCtrl,
+  //   );
+  // }
   _fieldTangalLahir() {
-    return TextField(
+    return TextFormField(
       decoration: const InputDecoration(labelText: "Tanggal Lahir"),
       controller: _tanggalLahirCtrl,
+      onTap: () {
+        showDatePicker(
+          context: context,
+          initialDate: DateTime.now(),
+          firstDate: DateTime(1900),
+          lastDate: DateTime.now(),
+        ).then((selectedDate) {
+          if (selectedDate != null) {
+            setState(() {
+              final formattedDate =
+                  "${selectedDate.year}-${selectedDate.month.toString().padLeft(2, '0')}-${selectedDate.day.toString().padLeft(2, '0')}";
+              _tanggalLahirCtrl.text = formattedDate;
+            });
+          }
+        });
+      },
+      readOnly: true,
     );
   }
 
@@ -87,13 +110,12 @@ class _PegawaiFormState extends State<PegawaiForm> {
     return ElevatedButton(
         onPressed: () async {
           Pegawai pegawai = new Pegawai(
-            nip: _nIPCtrl.text,
-            nama: _namaPegawaiCtrl.text,
-            tanggalLahir: _tanggalLahirCtrl.text,
-            nomorTelepon: _nomorTeleponCtrl.text,
-            email: _emailCtrl.text,
-            password: _passwordCtrl.text
-          );
+              nip: _nIPCtrl.text,
+              nama: _namaPegawaiCtrl.text,
+              tanggalLahir: DateTime.parse(_tanggalLahirCtrl.text),
+              nomorTelepon: _nomorTeleponCtrl.text,
+              email: _emailCtrl.text,
+              password: _passwordCtrl.text);
           await PegawaiService().simpan(pegawai).then((value) {
             Navigator.pushReplacement(
               context,
