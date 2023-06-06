@@ -22,9 +22,10 @@ class ServisAPI {
     }
   }
 }
+
 class GetApiLaravel {
   // lokasi json API
-  static const String _baseUrl = 'http://localhost:8000/api';
+  static const String _baseUrl = 'http://restapiku.test/api';
 
   // untuk memngambil value yang adanya nanti, {terhalang jaringan, load time/ saat ini value belum ada} maka pakai future
   Future<List<dynamic>> getProduk() async {

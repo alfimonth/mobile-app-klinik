@@ -1,28 +1,15 @@
 import 'package:flutter/material.dart';
-// import 'hello_world.dart';
-// import 'column_widget.dart';
-// import 'row_widget.dart';
-// import 'baris_kolom.dart';
-// import 'ui/home.dart';
-import 'ui/beranda.dart';
+import '/helpers/user.info.dart';
+import '/ui/beranda.dart';
+import '/ui/login.dart';
 
-void main() {
-  runApp(const MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return const MaterialApp(
-      title: 'Klinik',
-      // home: HelloWorld(),
-      // home: ColumnWidget(),
-      // home: RowWidget(),
-      // home: BarisKolomWidget(),
-      home: Beranda(),
-      debugShowCheckedModeBanner: false,
-    );
-  }
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  var token = await UserInfo().getToken();
+  print(token);
+  runApp(MaterialApp(
+    title: "Klinik APP",
+    debugShowCheckedModeBanner: false,
+    home: token == null ? Login() : Beranda(),
+  ));
 }
