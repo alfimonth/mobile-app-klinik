@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../model/pegawai.dart';
 import '../ui/pegawai_detail.dart';
+import '../service/pegawai_service.dart';
 
 class PegawaiUpdateForm extends StatefulWidget {
   final Pegawai pegawai;
@@ -18,17 +19,35 @@ class _PegawaiUpdateFormState extends State<PegawaiUpdateForm> {
   final _emailCtrl = TextEditingController();
   final _passwordCtrl = TextEditingController();
 
+  Future<Pegawai> getData() async {
+    Pegawai data = await PegawaiService().getById(widget.pegawai.id.toString());
+    setState(() {
+      if (data.nip != null) {
+        _nIPCtrl.text = data.nip;
+      }
+      if (data.nama != null) {
+        _namaPegawaiCtrl.text = data.nama;
+      }
+      if (data.tanggalLahir != null) {
+        _tanggalLahirCtrl.text = data.tanggalLahir;
+      }
+      if (data.nomorTelepon != null) {
+        _nomorTeleponCtrl.text = data.nomorTelepon;
+      }
+      if (data.email != null) {
+        _emailCtrl.text = data.email;
+      }
+      if (data.password != null) {
+        _passwordCtrl.text = data.password;
+      }
+    });
+    return data;
+  }
+
   @override
   void initState() {
     super.initState();
-    setState(() {
-      _namaPegawaiCtrl.text = widget.pegawai.nama;
-      _nIPCtrl.text = widget.pegawai.nip;
-      _tanggalLahirCtrl.text = widget.pegawai.tanggalLahir;
-      _nomorTeleponCtrl.text = widget.pegawai.nomorTelepon;
-      _emailCtrl.text = widget.pegawai.email;
-      _passwordCtrl.text = widget.pegawai.password;
-    });
+    getData();
   }
 
   @override
@@ -99,22 +118,26 @@ class _PegawaiUpdateFormState extends State<PegawaiUpdateForm> {
 
   _tombolSimpan() {
     return ElevatedButton(
-        onPressed: () {
-          Pegawai pegawai = new Pegawai({
-            'id': 999,
-            'nip': _nIPCtrl.text,
-            'nama': _namaPegawaiCtrl.text,
-            'tanggalLahir': _tanggalLahirCtrl.text,
-            'nomorTelepon': _nomorTeleponCtrl.text,
-            'email': _emailCtrl.text,
-            'password': _passwordCtrl.text,
-          });
+      onPressed: () async {
+        Pegawai pegawai = new Pegawai(
+            nip: _nIPCtrl.text,
+            nama: _namaPegawaiCtrl.text,
+            tanggalLahir: _tanggalLahirCtrl.text,
+            nomorTelepon: _nomorTeleponCtrl.text,
+            email: _emailCtrl.text,
+            password: _passwordCtrl.text);
+        String id = widget.pegawai.id.toString();
+        await PegawaiService().ubah(pegawai, id).then((value) {
           Navigator.pop(context);
           Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => PegawaiDetail(pegawai: pegawai)));
-        },
-        child: const Text("Simpan Perubahan"));
+            context,
+            MaterialPageRoute(
+              builder: (context) => PegawaiDetail(pegawai: value),
+            ),
+          );
+        });
+      },
+      child: const Text("Simpan Perubahan"),
+    );
   }
 }

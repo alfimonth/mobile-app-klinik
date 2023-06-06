@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:aplikasi_flutter_pertamaku/model/pegawai.dart';
 import 'package:aplikasi_flutter_pertamaku/ui/pegawai_detail.dart';
+import '../service/pegawai_service.dart';
 
 class PegawaiForm extends StatefulWidget {
   const PegawaiForm({Key? key}) : super(key: key);
@@ -84,20 +85,23 @@ class _PegawaiFormState extends State<PegawaiForm> {
 
   _tombolSimpan() {
     return ElevatedButton(
-        onPressed: () {
-          Pegawai pegawai = new Pegawai({
-            'id': 999,
-            'nip': _nIPCtrl.text,
-            'nama': _namaPegawaiCtrl.text,
-            'tanggalLahir': _tanggalLahirCtrl.text,
-            'nomorTelepon': _nomorTeleponCtrl.text,
-            'email': _emailCtrl.text,
-            'password': _passwordCtrl.text,
-          });
-          Navigator.pushReplacement(
+        onPressed: () async {
+          Pegawai pegawai = new Pegawai(
+            nip: _nIPCtrl.text,
+            nama: _namaPegawaiCtrl.text,
+            tanggalLahir: _tanggalLahirCtrl.text,
+            nomorTelepon: _nomorTeleponCtrl.text,
+            email: _emailCtrl.text,
+            password: _passwordCtrl.text
+          );
+          await PegawaiService().simpan(pegawai).then((value) {
+            Navigator.pushReplacement(
               context,
               MaterialPageRoute(
-                  builder: (context) => PegawaiDetail(pegawai: pegawai)));
+                builder: (context) => PegawaiDetail(pegawai: value),
+              ),
+            );
+          });
         },
         child: const Text("Simpan"));
   }

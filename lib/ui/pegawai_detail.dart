@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import '../model/pegawai.dart';
 import 'pegawai_update_form.dart';
 import 'pegawai_page.dart';
-import '../model/database.dart';
+import '../service/pegawai_service.dart';
 
 class PegawaiDetail extends StatefulWidget {
   final Pegawai pegawai;
@@ -14,6 +14,11 @@ class PegawaiDetail extends StatefulWidget {
 }
 
 class _PegawaiDetailState extends State<PegawaiDetail> {
+  Stream<Pegawai> getData() async* {
+    Pegawai data = await PegawaiService().getById(widget.pegawai.id.toString());
+    yield data;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -81,33 +86,38 @@ class _PegawaiDetailState extends State<PegawaiDetail> {
 
   _tombolHapus() {
     return ElevatedButton(
-        onPressed: () {
-          AlertDialog alertDialog = AlertDialog(
-            content: const Text("Yakin ingin menghapus data ini?"),
-            actions: [
-              // tombol ya
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                  Navigator.pushReplacement(context,
-                      MaterialPageRoute(builder: (context) => PegawaiPage()));
-                },
-                child: const Text("YA"),
-                style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
-              ),
-              // tombol batal
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                child: Text("Tidak"),
-                style: ElevatedButton.styleFrom(backgroundColor: Colors.green),
-              )
-            ],
-          );
-          showDialog(context: context, builder: (context) => alertDialog);
-        },
-        style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
-        child: const Text("Hapus"));
+      onPressed: () {
+        AlertDialog alertDialog = AlertDialog(
+          content: const Text("Yakin ingin menghapus data ini?"),
+          actions: [
+            StreamBuilder(
+                stream: getData(),
+                builder: (context, AsyncSnapshot snapshot) => ElevatedButton(
+                      onPressed: () async {
+                        await PegawaiService().hapus(snapshot.data).then((value) {
+                          Navigator.pop(context);
+                          Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => PegawaiPage()));
+                        });
+                      },
+                      child: const Text("YA"),
+                      style: ElevatedButton.styleFrom(primary: Colors.red),
+                    )),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: const Text("Tidak"),
+              style: ElevatedButton.styleFrom(primary: Colors.green),
+            )
+          ],
+        );
+        showDialog(context: context, builder: (context) => alertDialog);
+      },
+      style: ElevatedButton.styleFrom(primary: Colors.red),
+      child: const Text("Hapus"),
+    );
   }
 }
