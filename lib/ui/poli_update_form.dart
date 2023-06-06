@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../model/poli.dart';
-import '../ui/poli_detail.dart';
+import '../service/poli_service.dart';
+import 'poli_detail.dart';
 
 class PoliUpdateForm extends StatefulWidget {
   final Poli poli;
@@ -13,12 +14,20 @@ class _PoliUpdateFormState extends State<PoliUpdateForm> {
   final _formKey = GlobalKey<FormState>();
   final _namaPoliCtrl = TextEditingController();
 
+  Future<Poli> getData() async {
+    Poli data = await PoliService().getById(widget.poli.id.toString());
+    setState(() {
+      if (data.namaPoli != null) {
+        _namaPoliCtrl.text = data.namaPoli;
+      }
+    });
+    return data;
+  }
+
   @override
   void initState() {
     super.initState();
-    setState(() {
-      _namaPoliCtrl.text = widget.poli.namaPoli;
-    });
+    getData();
   }
 
   @override
@@ -45,12 +54,20 @@ class _PoliUpdateFormState extends State<PoliUpdateForm> {
 
   _tombolSimpan() {
     return ElevatedButton(
-        onPressed: () {
-          Poli poli = new Poli(namaPoli: _namaPoliCtrl.text);
+      onPressed: () async {
+        Poli poli = new Poli(namaPoli: _namaPoliCtrl.text);
+        String id = widget.poli.id.toString();
+        await PoliService().ubah(poli, id).then((value) {
           Navigator.pop(context);
-          Navigator.pushReplacement(context,
-              MaterialPageRoute(builder: (context) => PoliDetail(poli: poli)));
-        },
-        child: const Text("Simpan Perubahan"));
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => PoliDetail(poli: value),
+            ),
+          );
+        });
+      },
+      child: const Text("Simpan Perubahan"),
+    );
   }
 }
