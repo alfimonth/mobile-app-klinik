@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import '../model/pasien.dart';
 import 'pasien_update_form.dart';
 import 'pasien_page.dart';
-import '../model/database.dart';
+import '../service/pasien_service.dart';
 
 class PasienDetail extends StatefulWidget {
   final Pasien pasien;
@@ -14,6 +14,17 @@ class PasienDetail extends StatefulWidget {
 }
 
 class _PasienDetailState extends State<PasienDetail> {
+  Stream<Pasien> getData() async* {
+    Pasien data = await PasienService().getById(widget.pasien.id.toString());
+    yield data;
+  }
+
+  String formatDate(DateTime date) {
+    String formattedDate =
+        '${date.year.toString().padLeft(4, '0')}-${date.month.toString().padLeft(2, '0')}-${date.day.toString().padLeft(2, '0')}';
+    return formattedDate;
+  }
+
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
@@ -49,7 +60,9 @@ class _PasienDetailState extends State<PasienDetail> {
                       children: [
                         Text("${widget.pasien.nama}"),
                         Text("${widget.pasien.noRm}"),
-                        Text("${widget.pasien.tanggalLahir}"),
+                        Text(
+                          formatDate(widget.pasien.tanggalLahir),
+                        ),
                         Text("${widget.pasien.nomorTelepon}"),
                         Text("${widget.pasien.alamat}"),
                       ],
@@ -110,33 +123,40 @@ class _PasienDetailState extends State<PasienDetail> {
 
   _tombolHapus() {
     return ElevatedButton(
-        onPressed: () {
-          AlertDialog alertDialog = AlertDialog(
-            content: const Text("Yakin ingin menghapus data ini?"),
-            actions: [
-              // tombol ya
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                  Navigator.pushReplacement(context,
-                      MaterialPageRoute(builder: (context) => PasienPage()));
-                },
-                child: const Text("YA"),
-                style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
-              ),
-              // tombol batal
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                child: Text("Tidak"),
-                style: ElevatedButton.styleFrom(backgroundColor: Colors.green),
-              )
-            ],
-          );
-          showDialog(context: context, builder: (context) => alertDialog);
-        },
-        style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
-        child: const Text("Hapus"));
+      onPressed: () {
+        AlertDialog alertDialog = AlertDialog(
+          content: const Text("Yakin ingin menghapus data ini?"),
+          actions: [
+            StreamBuilder(
+                stream: getData(),
+                builder: (context, AsyncSnapshot snapshot) => ElevatedButton(
+                      onPressed: () async {
+                        await PasienService()
+                            .hapus(snapshot.data)
+                            .then((value) {
+                          Navigator.pop(context);
+                          Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => PasienPage()));
+                        });
+                      },
+                      child: const Text("YA"),
+                      style: ElevatedButton.styleFrom(primary: Colors.red),
+                    )),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: const Text("Tidak"),
+              style: ElevatedButton.styleFrom(primary: Colors.green),
+            )
+          ],
+        );
+        showDialog(context: context, builder: (context) => alertDialog);
+      },
+      style: ElevatedButton.styleFrom(primary: Colors.red),
+      child: const Text("Hapus"),
+    );
   }
 }

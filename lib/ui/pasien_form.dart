@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:aplikasi_flutter_pertamaku/model/pasien.dart';
 import 'package:aplikasi_flutter_pertamaku/ui/pasien_detail.dart';
+import '../service/pasien_service.dart';
 
 class PasienForm extends StatefulWidget {
   const PasienForm({Key? key}) : super(key: key);
@@ -56,9 +57,26 @@ class _PasienFormState extends State<PasienForm> {
   }
 
   _fieldTanggalLahir() {
-    return TextField(
+    return TextFormField(
       decoration: const InputDecoration(labelText: "Tanggal Lahir"),
       controller: _tanggalLahirCtrl,
+      onTap: () {
+        showDatePicker(
+          context: context,
+          initialDate: DateTime.now(),
+          firstDate: DateTime(1900),
+          lastDate: DateTime.now(),
+        ).then((selectedDate) {
+          if (selectedDate != null) {
+            setState(() {
+              final formattedDate =
+                  "${selectedDate.year}-${selectedDate.month.toString().padLeft(2, '0')}-${selectedDate.day.toString().padLeft(2, '0')}";
+              _tanggalLahirCtrl.text = formattedDate;
+            });
+          }
+        });
+      },
+      readOnly: true,
     );
   }
 
@@ -78,19 +96,21 @@ class _PasienFormState extends State<PasienForm> {
 
   _tombolSimpan() {
     return ElevatedButton(
-        onPressed: () {
-          Pasien pasien = new Pasien({
-            'id': 999,
-            'nama': _namaPasienCtrl.text,
-            'noRm': _noRekamMedisCtrl.text,
-            'tanggalLahir': _tanggalLahirCtrl.text,
-            'nomorTelepon': _nomorTeleponCtrl.text,
-            'alamat': _alamatCtrl.text
-          });
-          Navigator.pushReplacement(
+        onPressed: () async {
+          Pasien pasien = new Pasien(
+              noRm: _noRekamMedisCtrl.text,
+              nama: _namaPasienCtrl.text,
+              tanggalLahir: DateTime.parse(_tanggalLahirCtrl.text),
+              nomorTelepon: _nomorTeleponCtrl.text,
+              alamat: _alamatCtrl.text);
+          await PasienService().simpan(pasien).then((value) {
+            Navigator.pushReplacement(
               context,
               MaterialPageRoute(
-                  builder: (context) => PasienDetail(pasien: pasien)));
+                builder: (context) => PasienDetail(pasien: value),
+              ),
+            );
+          });
         },
         child: const Text("Simpan"));
   }

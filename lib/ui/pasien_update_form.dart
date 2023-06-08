@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../model/pasien.dart';
 import '../ui/pasien_detail.dart';
+import '../service/pasien_service.dart';
 
 class PasienUpdateForm extends StatefulWidget {
   final Pasien pasien;
@@ -17,16 +18,34 @@ class _PasienUpdateFormState extends State<PasienUpdateForm> {
   final _nomorTeleponCtrl = TextEditingController();
   final _alamatCtrl = TextEditingController();
 
+  Future<Pasien> getData() async {
+    Pasien data = await PasienService().getById(widget.pasien.id.toString());
+    setState(() {
+      if (data.noRm != null) {
+        _noRekamMedisCtrl.text = data.noRm;
+      }
+      if (data.nama != null) {
+        _namaPasienCtrl.text = data.nama;
+      }
+      if (data.tanggalLahir != null) {
+        final formattedDate =
+            "${data.tanggalLahir.year}-${data.tanggalLahir.month.toString().padLeft(2, '0')}-${data.tanggalLahir.day.toString().padLeft(2, '0')}";
+        _tanggalLahirCtrl.text = formattedDate;
+      }
+      if (data.nomorTelepon != null) {
+        _nomorTeleponCtrl.text = data.nomorTelepon;
+      }
+      if (data.alamat != null) {
+        _alamatCtrl.text = data.alamat;
+      }
+    });
+    return data;
+  }
+
   @override
   void initState() {
     super.initState();
-    setState(() {
-      _namaPasienCtrl.text = widget.pasien.nama;
-      _noRekamMedisCtrl.text = widget.pasien.noRm;
-      _tanggalLahirCtrl.text = widget.pasien.tanggalLahir;
-      _nomorTeleponCtrl.text = widget.pasien.nomorTelepon;
-      _alamatCtrl.text = widget.pasien.alamat;
-    });
+    getData();
   }
 
   @override
@@ -70,9 +89,26 @@ class _PasienUpdateFormState extends State<PasienUpdateForm> {
   }
 
   _fieldTanggalLahir() {
-    return TextField(
+    return TextFormField(
       decoration: const InputDecoration(labelText: "Tanggal Lahir"),
       controller: _tanggalLahirCtrl,
+      onTap: () {
+        showDatePicker(
+          context: context,
+          initialDate: DateTime.now(),
+          firstDate: DateTime(1900),
+          lastDate: DateTime.now(),
+        ).then((selectedDate) {
+          if (selectedDate != null) {
+            setState(() {
+              final formattedDate =
+                  "${selectedDate.year}-${selectedDate.month.toString().padLeft(2, '0')}-${selectedDate.day.toString().padLeft(2, '0')}";
+              _tanggalLahirCtrl.text = formattedDate;
+            });
+          }
+        });
+      },
+      readOnly: true,
     );
   }
 
@@ -92,21 +128,24 @@ class _PasienUpdateFormState extends State<PasienUpdateForm> {
 
   _tombolSimpan() {
     return ElevatedButton(
-        onPressed: () {
-          Pasien pasien = new Pasien({
-            'id': 999,
-            'nama': _namaPasienCtrl.text,
-            'noRm': _noRekamMedisCtrl.text,
-            'tanggalLahir': _tanggalLahirCtrl.text,
-            'nomorTelepon': _nomorTeleponCtrl.text,
-            'alamat': _alamatCtrl.text
-          });
-          Navigator.pop(context);
-          Navigator.pushReplacement(
+        onPressed: () async {
+          Pasien pasien = new Pasien(
+              noRm: _noRekamMedisCtrl.text,
+              nama: _namaPasienCtrl.text,
+              tanggalLahir: DateTime.parse(_tanggalLahirCtrl.text),
+              nomorTelepon: _nomorTeleponCtrl.text,
+              alamat: _alamatCtrl.text);
+          String id = widget.pasien.id.toString();
+          await PasienService().ubah(pasien, id).then((value) {
+            Navigator.pop(context);
+            Navigator.pushReplacement(
               context,
               MaterialPageRoute(
-                  builder: (context) => PasienDetail(pasien: pasien)));
+                builder: (context) => PasienDetail(pasien: value),
+              ),
+            );
+          });
         },
-        child: const Text("Simpan Perubahan"));
+        child: const Text("Simpan"));
   }
 }
