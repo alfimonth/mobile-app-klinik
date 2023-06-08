@@ -20,40 +20,53 @@ class PoliDetailState extends State<PoliDetail> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text("Detail Poli")),
-      body: StreamBuilder(
-        stream: getData(),
-        builder: (context, AsyncSnapshot snapshot) {
-          if (snapshot.hasError) {
-            return Text(snapshot.error.toString());
-          }
-          if (snapshot.connectionState != ConnectionState.done) {
-            return Center(
-              child: CircularProgressIndicator(),
+    return WillPopScope(
+      onWillPop: _onBackPressed,
+      child: Scaffold(
+        appBar: AppBar(title: Text("Detail Poli")),
+        body: StreamBuilder(
+          stream: getData(),
+          builder: (context, AsyncSnapshot snapshot) {
+            if (snapshot.hasError) {
+              return Text(snapshot.error.toString());
+            }
+            if (snapshot.connectionState != ConnectionState.done) {
+              return Center(
+                child: CircularProgressIndicator(),
+              );
+            }
+            if (!snapshot.hasData &&
+                snapshot.connectionState == ConnectionState.done) {
+              return Text('Data Tidak Ditemukan');
+            }
+            return Column(
+              children: [
+                SizedBox(height: 20),
+                Text(
+                  "Nama Poli : ${snapshot.data.namaPoli}",
+                  style: TextStyle(fontSize: 20),
+                ),
+                SizedBox(height: 20),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [_tombolUbah(), _tombolHapus()],
+                )
+              ],
             );
-          }
-          if (!snapshot.hasData &&
-              snapshot.connectionState == ConnectionState.done) {
-            return Text('Data Tidak Ditemukan');
-          }
-          return Column(
-            children: [
-              SizedBox(height: 20),
-              Text(
-                "Nama Poli : ${snapshot.data.namaPoli}",
-                style: TextStyle(fontSize: 20),
-              ),
-              SizedBox(height: 20),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [_tombolUbah(), _tombolHapus()],
-              )
-            ],
-          );
-        },
+          },
+        ),
       ),
+      
     );
+  }
+
+  Future<bool> _onBackPressed() async {
+    // Trigger a reload of the previous page when navigating back
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => PoliPage()),
+    );
+    return true; // Allow the back navigation
   }
 
   _tombolUbah() {

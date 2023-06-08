@@ -27,54 +27,67 @@ class _PegawaiDetailState extends State<PegawaiDetail> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(title: Text("Detail Pegawai")),
-        body: Column(
-          // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            const SizedBox(height: 50),
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.center,
+    return WillPopScope(
+        onWillPop: _onBackPressed,
+        child: Scaffold(
+            appBar: AppBar(title: Text("Detail Pegawai")),
+            body: Column(
+              // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: const [
-                      Text(textAlign: TextAlign.left, 'Nama'),
-                      Text(textAlign: TextAlign.left, 'NIP'),
-                      Text(textAlign: TextAlign.left, 'Email'),
-                      Text(textAlign: TextAlign.left, 'Tanggal Lahir'),
-                      Text(textAlign: TextAlign.left, 'Nomor Telepon')
-                    ]),
-                Column(children: const [
-                  Text(' : '),
-                  Text(' : '),
-                  Text(' : '),
-                  Text(' : '),
-                  Text(' : ')
-                ]),
-                Column(
+                const SizedBox(height: 50),
+                Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text("${widget.pegawai.nama}"),
-                    Text("${widget.pegawai.nip}"),
-                    Text("${widget.pegawai.email}"),
-                    Text(formatDate(widget.pegawai.tanggalLahir),),
-                    Text("${widget.pegawai.nomorTelepon}")
+                    Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: const [
+                          Text(textAlign: TextAlign.left, 'Nama'),
+                          Text(textAlign: TextAlign.left, 'NIP'),
+                          Text(textAlign: TextAlign.left, 'Email'),
+                          Text(textAlign: TextAlign.left, 'Tanggal Lahir'),
+                          Text(textAlign: TextAlign.left, 'Nomor Telepon')
+                        ]),
+                    Column(children: const [
+                      Text(' : '),
+                      Text(' : '),
+                      Text(' : '),
+                      Text(' : '),
+                      Text(' : ')
+                    ]),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text("${widget.pegawai.nama}"),
+                        Text("${widget.pegawai.nip}"),
+                        Text("${widget.pegawai.email}"),
+                        Text(
+                          formatDate(widget.pegawai.tanggalLahir),
+                        ),
+                        Text("${widget.pegawai.nomorTelepon}")
+                      ],
+                    )
+                  ],
+                ),
+                const SizedBox(height: 50),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    _tombolUbah(),
+                    _tombolHapus(),
                   ],
                 )
               ],
-            ),
-            const SizedBox(height: 50),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                _tombolUbah(),
-                _tombolHapus(),
-              ],
-            )
-          ],
-        ));
+            )));
+  }
+
+  Future<bool> _onBackPressed() async {
+    // Trigger a reload of the previous page when navigating back
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => PegawaiPage()),
+    );
+    return true; // Allow the back navigation
   }
 
   _tombolUbah() {
@@ -100,7 +113,9 @@ class _PegawaiDetailState extends State<PegawaiDetail> {
                 stream: getData(),
                 builder: (context, AsyncSnapshot snapshot) => ElevatedButton(
                       onPressed: () async {
-                        await PegawaiService().hapus(snapshot.data).then((value) {
+                        await PegawaiService()
+                            .hapus(snapshot.data)
+                            .then((value) {
                           Navigator.pop(context);
                           Navigator.pushReplacement(
                               context,
