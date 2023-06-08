@@ -24,14 +24,17 @@ class _PegawaiPageState extends State<PegawaiPage> {
       appBar: AppBar(
         title: const Text("Data Pegawai"),
         actions: [
-          GestureDetector(
-            child: const Icon(Icons.add),
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => PegawaiForm()),
-              );
-            },
+          Padding(
+            padding: const EdgeInsets.only(right: 16.0, left: 8.0),
+            child: GestureDetector(
+              child: const Icon(Icons.add),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => PegawaiForm()),
+                );
+              },
+            ),
           ),
         ],
       ),

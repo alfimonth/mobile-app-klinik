@@ -57,19 +57,22 @@ class _PegawaiUpdateFormState extends State<PegawaiUpdateForm> {
     return Scaffold(
       appBar: AppBar(title: const Text("Ubah Pegawai")),
       body: SingleChildScrollView(
-        child: Form(
-          key: _formKey,
-          child: Column(
-            children: [
-              _fieldNamaPegawai(),
-              _fieldNIP(),
-              _fieldTangalLahir(),
-              _fieldNomorTelepon(),
-              _fieldEmail(),
-              _fieldPassword(),
-              const SizedBox(height: 20),
-              _tombolSimpan()
-            ],
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+          child: Form(
+            key: _formKey,
+            child: Column(
+              children: [
+                _fieldNamaPegawai(),
+                _fieldNIP(),
+                _fieldTangalLahir(),
+                _fieldNomorTelepon(),
+                _fieldEmail(),
+                _fieldPassword(),
+                const SizedBox(height: 20),
+                _tombolSimpan()
+              ],
+            ),
           ),
         ),
       ),

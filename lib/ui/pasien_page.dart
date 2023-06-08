@@ -20,12 +20,15 @@ class _PasienPageState extends State<PasienPage> {
       appBar: AppBar(
         title: const Text("Data Pasien"),
         actions: [
-          GestureDetector(
-            child: const Icon(Icons.add),
-            onTap: () {
-              Navigator.push(
-                  context, MaterialPageRoute(builder: (context) => PasienForm()));
-            },
+          Padding(
+            padding: const EdgeInsets.only(right: 16.0, left: 8.0),
+            child: GestureDetector(
+              child: const Icon(Icons.add),
+              onTap: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => PasienForm()));
+              },
+            ),
           )
         ],
         // title: const Text("Data Pasien")

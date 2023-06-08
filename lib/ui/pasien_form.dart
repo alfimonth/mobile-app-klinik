@@ -20,18 +20,21 @@ class _PasienFormState extends State<PasienForm> {
     return Scaffold(
       appBar: AppBar(title: const Text("Tambah Pasien")),
       body: SingleChildScrollView(
-        child: Form(
-          key: _formKey,
-          child: Column(
-            children: [
-              _fieldNamaPasien(),
-              _fieldNoRekamMedis(),
-              _fieldTanggalLahir(),
-              _fieldNomorTelepon(),
-              _fieldAlamat(),
-              const SizedBox(height: 20),
-              _tombolSimpan()
-            ],
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+          child: Form(
+            key: _formKey,
+            child: Column(
+              children: [
+                _fieldNamaPasien(),
+                _fieldNoRekamMedis(),
+                _fieldTanggalLahir(),
+                _fieldNomorTelepon(),
+                _fieldAlamat(),
+                const SizedBox(height: 20),
+                _tombolSimpan()
+              ],
+            ),
           ),
         ),
       ),

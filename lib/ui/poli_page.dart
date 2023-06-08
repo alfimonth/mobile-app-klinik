@@ -24,14 +24,17 @@ class _PoliPageState extends State<PoliPage> {
       appBar: AppBar(
         title: const Text("Data Poli"),
         actions: [
-          GestureDetector(
-            child: const Icon(Icons.add),
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => PoliForm()),
-              );
-            },
+          Padding(
+            padding: const EdgeInsets.only(right: 16.0, left: 8.0),
+            child: GestureDetector(
+              child: const Icon(Icons.add),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => PoliForm()),
+                );
+              },
+            ),
           ),
         ],
       ),

@@ -17,10 +17,17 @@ class _PoliFormState extends State<PoliForm> {
     return Scaffold(
       appBar: AppBar(title: const Text("Tambah Poli")),
       body: SingleChildScrollView(
-        child: Form(
-          key: _formKey,
-          child: Column(
-            children: [_fieldNamaPoli(), SizedBox(height: 20), _tombolSimpan()],
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+          child: Form(
+            key: _formKey,
+            child: Column(
+              children: [
+                _fieldNamaPoli(),
+                SizedBox(height: 20),
+                _tombolSimpan()
+              ],
+            ),
           ),
         ),
       ),
