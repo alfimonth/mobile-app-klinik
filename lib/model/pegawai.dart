@@ -20,8 +20,8 @@ class Pegawai {
         id: json["id"],
         nip: json["nip"],
         nama: json["nama"],
-        tanggalLahir: DateTime.parse(json["tgl_lahir"]),
-        nomorTelepon: json["no_telp"],
+        tanggalLahir: DateTime.parse(json["tanggal_lahir"]),
+        nomorTelepon: json["nomor_telepon"],
         email: json["email"],
         password: json["password"],
       );
@@ -29,8 +29,8 @@ class Pegawai {
   Map<String, dynamic> toJson() => {
         "nip": nip,
         "nama": nama,
-        "tgl_lahir": tanggalLahir.toIso8601String(),
-        "no_telp": nomorTelepon,
+        "tanggal_lahir": tanggalLahir.toIso8601String(),
+        "nomor_telepon": nomorTelepon,
         "email": email,
         "password": password
       };
